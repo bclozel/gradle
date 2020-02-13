@@ -75,12 +75,7 @@ import java.util.concurrent.Callable;
 public class JavaCompile extends AbstractCompile {
     private final CompileOptions compileOptions;
     private JavaToolChain toolChain;
-    private final FileCollection stableSources = getProject().files(new Callable<Object[]>() {
-        @Override
-        public Object[] call() {
-            return new Object[]{getSource(), getSources()};
-        }
-    });
+    private final FileCollection stableSources = getProject().files((Callable<Object[]>) () -> new Object[]{getSource(), getSources()});
 
     public JavaCompile() {
         CompileOptions compileOptions = getProject().getObjects().newInstance(CompileOptions.class);
