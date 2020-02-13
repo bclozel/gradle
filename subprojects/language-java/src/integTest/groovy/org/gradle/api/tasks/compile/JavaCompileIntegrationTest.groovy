@@ -962,7 +962,7 @@ class JavaCompileIntegrationTest extends AbstractPluginIntegrationTest {
                 public native void foo();
             }
         """
-        def generatedHeader = file("build/generates/sources/headers/java/main/my_org_Foo.h")
+        def generatedHeader = file("build/generated/sources/headers/java/main/my_org_Foo.h")
 
         when:
         succeeds "compileJava"

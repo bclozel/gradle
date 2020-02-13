@@ -222,6 +222,9 @@ public class JavaCompile extends AbstractCompile {
         spec.setSourceCompatibility(getSourceCompatibility());
         spec.setCompileOptions(compileOptions);
         spec.setSourcesRoots(CompilationSourceDirs.inferSourceRoots((FileTreeInternal) getStableSources().getAsFileTree()));
+        if (((JavaToolChainInternal) getToolChain()).getJavaVersion().compareTo(JavaVersion.VERSION_1_8) < 0) {
+            spec.getCompileOptions().setHeaderOutputDirectory(null);
+        }
         return spec;
     }
 
