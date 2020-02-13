@@ -55,7 +55,7 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
         fails 'hello'
 
         then:
-        assertHasStartupFailure(failure, "Cannot create parent directory '${executer.gradleUserHomeDir}${File.separator}caches' when creating directory '${executer.gradleUserHomeDir}${File.separator}caches${File.separator}${GradleVersion.current().version}${File.separator}generated-gradle-jars'")
+        assertHasStartupFailure(failure, "Cannot create parent directory '${executer.gradleUserHomeDir.file("caches")}' when creating directory '${executer.gradleUserHomeDir.file("caches")}")
     }
 
     def "Error message due to unwritable Gradle daemon directory is not scary"() {
@@ -71,7 +71,7 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
         fails 'hello'
 
         then:
-        assertHasStartupFailure(failure, "Failed to create directory '${daemonDir}${File.separator}${GradleVersion.current().version}'")
+        assertHasStartupFailure(failure, "Failed to create directory '${daemonDir}")
     }
 
     def "Error message due to unwritable native directory is not scary"() {
@@ -79,10 +79,10 @@ class InternalGradleFailuresIntegrationTest extends AbstractIntegrationSpec {
         requireOwnGradleUserHomeDir()
         requireGradleDistribution()
 
-        def nativeDir = testDirectory.file("native-dir")
+        def nativeDir = executer.gradleUserHomeDir.file("native")
         nativeDir.touch()
 
-        executer.withEnvironmentVars(GRADLE_OPTS: "-Dorg.gradle.native.dir=\"${nativeDir}\"")
+        executer.withNoExplicitNativeServicesDir()
 
         when:
         fails 'hello'
