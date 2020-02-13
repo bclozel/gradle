@@ -181,6 +181,7 @@ public class MinimalJavaCompileOptions implements Serializable {
         this.annotationProcessorGeneratedSourcesDirectory = annotationProcessorGeneratedSourcesDirectory;
     }
 
+    @Nullable
     public File getHeaderOutputDirectory() {
         return headerOutputDirectory;
     }
