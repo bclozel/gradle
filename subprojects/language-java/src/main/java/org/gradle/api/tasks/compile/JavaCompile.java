@@ -23,6 +23,7 @@ import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.internal.file.FileTreeInternal;
 import org.gradle.api.internal.project.ProjectInternal;
+import org.gradle.api.internal.provider.PropertyInternal;
 import org.gradle.api.internal.tasks.JavaToolChainFactory;
 import org.gradle.api.internal.tasks.compile.CleaningJavaCompiler;
 import org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationReportingCompiler;
@@ -80,6 +81,11 @@ public class JavaCompile extends AbstractCompile {
     public JavaCompile() {
         CompileOptions compileOptions = getProject().getObjects().newInstance(CompileOptions.class);
         this.compileOptions = compileOptions;
+
+        // Work around for https://github.com/gradle/gradle/issues/6619
+        ((PropertyInternal<?>) compileOptions.getHeaderOutputDirectory()).attachProducer(this);
+        ((PropertyInternal<?>) compileOptions.getGeneratedSourceOutputDirectory()).attachProducer(this);
+
         CompilerForkUtils.doNotCacheIfForkingViaExecutable(compileOptions, getOutputs());
     }
 

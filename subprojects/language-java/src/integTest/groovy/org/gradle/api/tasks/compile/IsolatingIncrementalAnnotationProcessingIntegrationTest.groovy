@@ -340,10 +340,6 @@ class IsolatingIncrementalAnnotationProcessingIntegrationTest extends AbstractIn
     @ToBeFixedForInstantExecution
     def "processors can generate identical resources in different locations"() {
         given:
-        // Have to configure a native header output directory otherwise there will be errors; javac NPEs when files are created in NATIVE_HEADER_OUTPUT without any location set.
-        buildFile << '''
-compileJava.options.headerOutputDirectory = file("build/headers/java/main")
-'''
         def locations = [StandardLocation.SOURCE_OUTPUT.toString(), StandardLocation.NATIVE_HEADER_OUTPUT.toString(), StandardLocation.CLASS_OUTPUT.toString()]
         withProcessor(new ResourceGeneratingProcessorFixture().withOutputLocations(locations).withDeclaredType(IncrementalAnnotationProcessorType.ISOLATING))
         def a = java "@Thing class A {}"
@@ -354,7 +350,7 @@ compileJava.options.headerOutputDirectory = file("build/headers/java/main")
 
         then:
         file("build/generated/sources/annotationProcessor/java/main/A.txt").exists()
-        file("build/headers/java/main/A.txt").exists()
+        file("build/generated/sources/headers/java/main/A.txt").exists()
         file("build/classes/java/main/A.txt").exists()
 
         when:
@@ -364,7 +360,7 @@ compileJava.options.headerOutputDirectory = file("build/headers/java/main")
         then: "they all get cleaned"
         outputs.deletedClasses("A")
         !file("build/generated/sources/annotationProcessor/java/main/A.txt").exists()
-        !file("build/headers/java/main/A.txt").exists()
+        !file("build/generated/sources/headers/java/main/A.txt").exists()
         !file("build/classes/java/main/A.txt").exists()
     }
 

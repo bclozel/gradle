@@ -88,13 +88,13 @@ public class CompileOptions extends AbstractOptions {
 
     private FileCollection annotationProcessorPath;
 
-    private final DirectoryProperty annotationProcessorGeneratedSourcesDirectory;
+    private final DirectoryProperty generatedSourceDirectory;
 
     private final DirectoryProperty headerOutputDirectory;
 
     @Inject
     public CompileOptions(ProjectLayout projectLayout, ObjectFactory objectFactory) {
-        this.annotationProcessorGeneratedSourcesDirectory = objectFactory.directoryProperty();
+        this.generatedSourceDirectory = objectFactory.directoryProperty();
         this.headerOutputDirectory = objectFactory.directoryProperty();
     }
 
@@ -482,7 +482,7 @@ public class CompileOptions extends AbstractOptions {
     @Optional
     @OutputDirectory
     public DirectoryProperty getGeneratedSourceOutputDirectory() {
-        return annotationProcessorGeneratedSourcesDirectory;
+        return generatedSourceDirectory;
     }
 
     /**
@@ -493,7 +493,7 @@ public class CompileOptions extends AbstractOptions {
     @Nullable
     @ReplacedBy("generatedSourceDirectory")
     public File getAnnotationProcessorGeneratedSourcesDirectory() {
-        return annotationProcessorGeneratedSourcesDirectory.getAsFile().getOrNull();
+        return generatedSourceDirectory.getAsFile().getOrNull();
     }
 
     /**
@@ -502,7 +502,7 @@ public class CompileOptions extends AbstractOptions {
      * @since 4.3
      */
     public void setAnnotationProcessorGeneratedSourcesDirectory(@Nullable File file) {
-        this.annotationProcessorGeneratedSourcesDirectory.set(file);
+        this.generatedSourceDirectory.set(file);
     }
 
     /**
@@ -511,7 +511,7 @@ public class CompileOptions extends AbstractOptions {
      * @since 4.3
      */
     public void setAnnotationProcessorGeneratedSourcesDirectory(Provider<File> file) {
-        this.annotationProcessorGeneratedSourcesDirectory.fileProvider(file);
+        this.generatedSourceDirectory.fileProvider(file);
     }
 
     /**
